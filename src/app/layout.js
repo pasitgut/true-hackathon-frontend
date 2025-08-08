@@ -22,7 +22,34 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+         <div className="outer-wrapper h-screen overflow-y-auto">
+      <div className="mobile-wrapper">
+        <h1 className="text-black text-2xl flex justify-center pt-8">True Know</h1>
+        <ul className="flex flex-rows justify-center pt-4 gap-8">
+          <li>Menu</li>
+          <li>Collection</li>
+          <li>About</li>
+          <li>Contact Us</li>
+        </ul>
+        {/* <div className="h-[200px] mt-4 overflow-x-auto whitespace-nowrap flex gap-4 px-4">
+          {["/img1.jpg", "/img2.jpg", "/img3.jpg"].map((src, index) => (
+            <div key={index}
+            className="inline-block w-full h-full bg-gradient-to-r from-red-400 to-red-600 rounded-lg text-white flex items-center justify-center text-xl shrink-0">
+              Slide {index}
+              </div>
+
+    //           <img
+    //   key={index}
+    //   src={src}
+    //   alt={`Slide ${index}`}
+    //   className="inline-block w-[300px] h-full object-cover rounded-lg shrink-0"
+    // />
+          ))}
+        </div> */}
+        
+        { children }
+      </div>
+    </div>
       </body>
     </html>
   );
