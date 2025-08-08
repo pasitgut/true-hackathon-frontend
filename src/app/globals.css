@@ -42,7 +42,7 @@ body {
 .mobile-wrapper {
   width: 390px;
   height: 100%;
-  background-color: #f9f9f9;
+  background-color: white;
   box-shadow: 0 0 10px rgba(0,0,0, 0.1);
   overflow-y: auto;
   overflow-x: hidden;
