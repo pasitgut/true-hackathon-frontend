@@ -28,6 +28,7 @@ function Logo() {
     <div className="flex items-center gap-2 mt-8">
       <Image
         src="/true-icon.svg"
+        alt=""
         width={183}
         height={50}
       />
@@ -45,32 +46,8 @@ export default function RootLayout({ children }) {
       <div className="mobile-wrapper">
        <div className="flex justify-center mt-4">  <Logo/></div>
         <MenuBar/>
-        {/* { children } */}
-        <ImageSlider/>
-        <div className="m-2"><AnimatedStatsComponent/></div>
-          <div className="p-7 mt-[-40]">
-            <button className="w-full max-w-sm mx-auto bg-[#ED282E] text-white font-medium px-6 py-3 rounded-full flex items-center justify-between group hover:bg-[#d1242a] transition-colors">
-              <span className="flex-1 text-left">
-                เริ่มต้น
-              </span>
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                className="ml-2 group-hover:translate-x-1 transition-transform"
-              >
-                <path 
-                  d="M9 18L15 12L9 6" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="mt-[-15]"><ServicesMenu/></div>
+        { children }
+        
       </div>
     </div>
       </body>
