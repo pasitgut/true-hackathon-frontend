@@ -74,6 +74,7 @@ const AnimatedStatsComponent = () => {
         <StatItem
           icon={<Image 
                       src="/family.png"
+                      alt='family'
                       width={24}
                       height={24}
                 />}
@@ -85,6 +86,7 @@ const AnimatedStatsComponent = () => {
         <StatItem
           icon={<Image 
             src="/wallet.png"
+            alt='wallet'
             width={24}
             height={24}
       />}
@@ -96,6 +98,7 @@ const AnimatedStatsComponent = () => {
         <StatItem
           icon={<Image 
             src="/child.png"
+            alt='child'
             width={24}
             height={24}
       />}

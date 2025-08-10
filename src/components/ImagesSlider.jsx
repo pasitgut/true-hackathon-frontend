@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import { ChevronRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const ImageSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

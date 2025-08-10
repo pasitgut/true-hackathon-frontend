@@ -3,6 +3,7 @@ import CarouselSection from "@/components/CarouselSection";
 import ImageSlider from "@/components/ImagesSlider";
 import ServicesMenu from "@/components/ServicesMenu";
 import AnimatedStatsComponent from "@/components/AnimatedStatsComponent";
+import Link from "next/link";
 // export default function Home() {
 //   return (
 //     <>
@@ -26,9 +27,9 @@ export default function Home() {
         {/* <AnimatedStatsComponent/> */}
           <div className="p-7 mt-[-40]">
             <button className="w-full max-w-sm mx-auto bg-[#ED282E] text-white font-medium px-6 py-3 rounded-full flex items-center justify-between group hover:bg-[#d1242a] transition-colors">
-              <span className="flex-1 text-left">
+              <Link href="/family"><span className="flex-1 text-left">
                 เริ่มต้น
-              </span>
+              </span></Link>
               <svg 
                 width="20" 
                 height="20" 
