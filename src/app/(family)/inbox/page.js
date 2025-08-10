@@ -116,8 +116,8 @@ function EmptyStateMessage({ message }) {
 
 // Component หลักของหน้า Inbox
 export default function InboxPage() {
-  const [sentInvitations, setSentInvitations] = useState(initialSentInvitations);
-  const [receivedInvitations, setReceivedInvitations] = useState(initialReceivedInvitations);
+  const [sentInvitations, setSentInvitations] = useState([]);
+  const [receivedInvitations, setReceivedInvitations] = useState([]);
 
 
   useEffect(() => {
