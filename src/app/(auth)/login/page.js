@@ -91,6 +91,7 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
+      localStorage.clear();
       const response = await fetch('https://true-backend.pasitlab.com/api/auth/login', {
         method: 'POST',
         headers: {

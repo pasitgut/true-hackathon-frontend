@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
       >
         <div className="outer-wrapper h-screen overflow-y-auto">
           <div className="mobile-wrapper">
-             <div className="flex justify-center mt-4">  <Logo/></div>
+             <div className="flex justify-center">  <Logo/></div>
         { children }
           </div>
         </div>

@@ -1,7 +1,7 @@
 'use client'; // ต้องมีบรรทัดนี้สำหรับ App Router เพื่อใช้ state และ event
 
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const ToggleSwitch = ({ initialChecked = false }) => {
   const [isOn, setIsOn] = useState(initialChecked);
@@ -26,8 +26,23 @@ const ToggleSwitch = ({ initialChecked = false }) => {
 
 // === Component หลักของหน้า ===
 export default function ProfileSettingsPage() {
-  
-  // ข้อมูลสำหรับแสดงผลในแต่ละแถวของการตั้งค่า
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setUsername(user.username);
+      setPhone(user.phone);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    router.push('/login'); // ปรับเส้นทางตามที่คุณใช้งานจริง เช่น '/' หรือ '/auth/login'
+  };
+
   const settingsItems = [
     {
       id: 1,
@@ -53,16 +68,10 @@ export default function ProfileSettingsPage() {
     },
     {
       id: 3,
-      label: 'ฉันได้อ่านแล้วว่า VPN จะจัดการข้อมูลของฉัน อย่างไร',
+      label: 'ช่วยเราปรับปรุงผลิตภัณฑ์โดยส่งข้อมูลการใช้งานที่ไม่ระบุบุคคล',
       defaultChecked: false,
     },
-    {
-      id: 4,
-      label: 'ช่วยเราปรับปรุงผลิตภัณฑ์โดยส่งข้อมูลการใช้งานที่ไม่ระบุบุคคล',
-      defaultChecked: true,
-    },
   ];
-
 
   return (
     <main className="flex min-h-screen justify-center bg-gray-50 p-4">
@@ -71,7 +80,6 @@ export default function ProfileSettingsPage() {
         {/* ส่วนข้อมูลโปรไฟล์ */}
         <div className="flex items-center space-x-4">
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200">
-            {/* ไอคอนรูปคน (SVG) */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12 text-gray-400"
@@ -88,9 +96,9 @@ export default function ProfileSettingsPage() {
           <div className="flex flex-col">
             <span className="text-sm text-gray-500">ชื่อผู้ใช้งาน</span>
             <span className="text-xl font-bold text-gray-800">
-              Kittayot Muttakit
+              {username}
             </span>
-            <span className="text-sm text-gray-500">09x-xxx-xxxx</span>
+            <span className="text-sm text-gray-500">{phone}</span>
           </div>
         </div>
 
@@ -106,6 +114,17 @@ export default function ProfileSettingsPage() {
             </div>
           ))}
         </div>
+
+        {/* เส้นคั่น */}
+        <hr className="my-6 border-gray-200" />
+
+        {/* ปุ่ม Logout */}
+        <button
+          onClick={handleLogout}
+          className="w-full rounded-md bg-red-500 py-2 text-white hover:bg-red-600 transition"
+        >
+          ออกจากระบบ
+        </button>
       </div>
     </main>
   );

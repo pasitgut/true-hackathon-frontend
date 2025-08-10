@@ -115,6 +115,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      localStorage.clear();
       const response = await fetch('https://true-backend.pasitlab.com/api/auth/register', {
         method: 'POST',
         headers: {
@@ -132,6 +133,9 @@ export default function RegisterPage() {
         alert('สมัครสมาชิกสำเร็จ');
         if (data.token) {
           localStorage.setItem('token', data.token);
+        }
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
         }
         router.push('/');
       } else {

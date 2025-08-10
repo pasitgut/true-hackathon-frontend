@@ -1,18 +1,18 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 const ServicesMenu = () => {
     const services = [
       {
         id: 1,
-        name: "ภาครัฐสำคัญ",
-        icon: (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="4" width="18" height="12" stroke="currentColor" strokeWidth="2" fill="none"/>
-            <rect x="5" y="8" width="4" height="4" fill="currentColor"/>
-            <rect x="10" y="6" width="8" height="2" fill="currentColor"/>
-            <rect x="10" y="10" width="6" height="2" fill="currentColor"/>
-          </svg>
-        )
+        name: "Account Info",
+       icon: (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" />
+  </svg>
+)
+
       },
       {
         id: 2,
@@ -49,16 +49,14 @@ const ServicesMenu = () => {
       {
         id: 5,
         name: "FAQ",
-        icon: (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
-            <circle cx="8" cy="18" r="2" stroke="currentColor" strokeWidth="2" fill="none"/>
-            <circle cx="16" cy="18" r="2" stroke="currentColor" strokeWidth="2" fill="none"/>
-            <path d="M3 12h18" stroke="currentColor" strokeWidth="2"/>
-            <path d="M8 6v6" stroke="currentColor" strokeWidth="2"/>
-            <path d="M16 6v6" stroke="currentColor" strokeWidth="2"/>
-          </svg>
-        )
+       icon: (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+    <path d="M9 9c0-1.5 1.5-3 3-3s3 1.5 3 3c0 1.5-1.5 2-2 2.5s-1 1-1 2" stroke="currentColor" strokeWidth="2" />
+    <circle cx="12" cy="17" r="1" fill="currentColor" />
+  </svg>
+)
+
       },
       {
         id: 6,
@@ -98,14 +96,14 @@ const ServicesMenu = () => {
     const handleServiceClick = (service) => {
       console.log(`Clicked: ${service.name}`);
     };
-  
+    const router = useRouter();
     return (
       <div className="w-80 mx-auto p-1" style={{ fontSize: '18px' }}>
         <div className="grid grid-cols-4 gap-3">
           {services.map((service, index) => (
             <button
               key={service.id}
-              onClick={() => handleServiceClick(service)}
+              onClick={() => router.push('/account')}
               className={`flex flex-col items-center p-3 rounded-lg transition-all duration-200 hover:scale-105 ${
                 index === 7 
                   ? 'bg-red-500 text-white hover:bg-red-600 shadow-sm border border-red-100' 

@@ -60,8 +60,9 @@ export default function CreateFamilyPage() {
       // const result = await response.json(); // หาก API ตอบกลับข้อมูลบางอย่าง
       // console.log('Family created:', result);
       const result = await response.json();
+      console.log(result.family);
       if (result.family) {
-        localStorage.setItem('family', result.family);
+        localStorage.setItem('family', JSON.stringify(result.family));
       }
       
       router.push('/family'); // ไปยังหน้า family หลังสร้างสำเร็จ
