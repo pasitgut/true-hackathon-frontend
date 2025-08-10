@@ -124,12 +124,15 @@ export default function FamilyPage() {
           },
           body: JSON.stringify({ user_id: userId }),
         });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch family data');
+
+        // if (!response.ok) {
+        //   throw new Error('Failed to fetch family data');
+        // }
+        const data = await response.json();
+        if (data.error == "User haven't family") {
+          router.push('/create-family');
         }
         
-        const data = await response.json();
         setFamilyMembers(data);
         localStorage.setItem('family_id', data[0].family_id);
       } catch (err) {
@@ -248,7 +251,7 @@ export default function FamilyPage() {
         </svg>
       </div>
       <p className="text-sm font-medium text-gray-800">สถานะการปกป้อง</p>
-      <p className="text-xs text-gray-500">ตรวจสอบความปลอดภัยการใช้อินเตอร์เน็ต</p>
+      <p className="text-xs text-gray-500">ตรวจสอบความปลอดภัย</p>
     </Link>
   </button>
 

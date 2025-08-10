@@ -1,16 +1,16 @@
-'use client'; // จำเป็นต้องใช้สำหรับ state และ event handling
-
+'use client';
 
 import InputField from '@/components/InputField';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // สำหรับ redirect หลัง login สำเร็จ
+import { useRouter } from 'next/navigation';
 
-// === ไอคอน (SVG Components) ===
-// การแยกไอคอนเป็น Component ช่วยให้โค้ดหลักอ่านง่ายขึ้น
-
-const MailIcon = (props) => (
+// === ไอคอน ===
+const PhoneIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-    <path fill="currentColor" d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5l-8-5h16zm0 12H4V8l8 5l8-5v10z"></path>
+    <path
+      fill="currentColor"
+      d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1H7.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2z"
+    />
   </svg>
 );
 
@@ -41,30 +41,25 @@ const EyeOffIcon = (props) => (
   </svg>
 );
 
-// === Component หลักของหน้า ===
 export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  // State สำหรับเก็บข้อมูล form
+
   const [formData, setFormData] = useState({
-    email: '',
+    phone: '',
     password: ''
   });
 
-  // State สำหรับ error messages
   const [errors, setErrors] = useState({});
 
-  // Function สำหรับอัพเดท input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    
-    // Clear error เมื่อ user เริ่มพิมพ์
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -73,14 +68,13 @@ export default function LoginPage() {
     }
   };
 
-  // Function สำหรับ validate form
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'กรุณากรอกอีเมล';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'กรุณากรอกเบอร์โทรศัพท์';
+    } else if (!/^0\d{9}$/.test(formData.phone)) {
+      newErrors.phone = 'รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง (ต้องมี 10 หลักและขึ้นต้นด้วย 0)';
     }
 
     if (!formData.password) {
@@ -91,14 +85,11 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Function สำหรับส่ง API
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
 
     setLoading(true);
-    
     try {
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
@@ -106,7 +97,7 @@ export default function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: formData.email,
+          phone: formData.phone,
           password: formData.password
         })
       });
@@ -114,24 +105,18 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Login สำเร็จ
         alert('เข้าสู่ระบบสำเร็จ!');
-        
-        // เก็บ token ใน localStorage
+
         if (data.token) {
           localStorage.setItem('token', data.token);
         }
-        
-        // เก็บข้อมูล user (ถ้ามี)
+
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
-        
-        // Redirect ไปหน้าหลักหรือหน้าที่ต้องการ
-        router.push('/'); // เปลี่ยนเป็น path ที่ต้องการ
-        
+
+        router.push('/');
       } else {
-        // มี error จาก server
         if (data.errors) {
           setErrors(data.errors);
         } else {
@@ -151,21 +136,19 @@ export default function LoginPage() {
     <main className="flex w-full justify-center p-4">
       <div className="w-full max-w-sm rounded-lg bg-white p-8">
         <form className="flex flex-col space-y-8" onSubmit={handleSubmit}>
-          
-          {/* --- ช่องกรอก Email --- */}
-          <div>
-              <InputField
-                label="EMAIL"
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="example@gmail.com"
-                error={errors.email}
-                icon={<MailIcon className="h-5 w-5 text-gray-400" />}
-              />
-            </div>
+
+          {/* --- ช่องกรอกเบอร์โทร --- */}
+          <InputField
+            label="เบอร์โทรศัพท์"
+            type="text"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            placeholder="08xxxxxxxx"
+            error={errors.phone}
+            icon={<PhoneIcon className="h-5 w-5 text-gray-400" />}
+          />
 
           {/* --- ช่องกรอก Password --- */}
           <InputField
@@ -187,6 +170,7 @@ export default function LoginPage() {
               {showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
             </button>
           </InputField>
+
           {/* --- ปุ่ม Login --- */}
           <button
             type="submit"

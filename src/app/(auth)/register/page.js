@@ -1,12 +1,11 @@
-'use client'; // จำเป็นต้องใช้สำหรับ state และ event handling
+'use client';
 
 import InputField from '@/components/InputField';
 import { useState } from 'react';
-import Link from 'next/link'; // ใช้ Link ของ Next.js เพื่อการ navigate ที่ดีกว่า
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
 // === ไอคอน (SVG Components) ===
-// แยกไอคอนเป็น Component เพื่อให้โค้ดหลักอ่านง่าย
-// ไม่ต้องใส่ Type Props แบบ TypeScript
 
 const UserIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -17,14 +16,10 @@ const UserIcon = (props) => (
   </svg>
 );
 
-const MailIcon = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-    <path fill="currentColor" d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5l-8-5h16zm0 12H4V8l8 5l8-5v10z"></path>
-  </svg>
-);
-
 const PhoneIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5L15 15l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5L15 15l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+  </svg>
 );
 
 const LockIcon = (props) => (
@@ -54,7 +49,6 @@ const EyeOffIcon = (props) => (
   </svg>
 );
 
-
 // === Component หลักของหน้า ===
 export default function RegisterPage() {
   const router = useRouter();
@@ -64,17 +58,14 @@ export default function RegisterPage() {
 
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     phone: '',
-    password: '', 
+    password: '',
     confirmPassword: '',
+  });
 
-  })
-
-  const [error, setError] = useState('');
+  const [error, setError] = useState({});
 
   const handleInputChange = (e) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -88,48 +79,40 @@ export default function RegisterPage() {
     }
   };
 
-  
   const validateForm = () => {
     const newError = {};
 
     if (!formData.username.trim()) {
-      newError.username = 'username is empty'
-    }
-
-    if (!formData.email.trim()) {
-      newError.email =  'empty is empty'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newError.email = 'email format is invalid'
+      newError.username = 'กรุณากรอกชื่อผู้ใช้';
     }
 
     if (!formData.phone.trim()) {
-      newError.phone = 'phone is empty'
-    } else if (!formData.phone.length !== 10) {
-      newError.phone = 'phone must have 10 number only';
-    } 
+      newError.phone = 'กรุณากรอกเบอร์โทรศัพท์';
+    } else if (!/^0\d{9}$/.test(formData.phone)) {
+      newError.phone = 'เบอร์โทรต้องมี 10 หลักและขึ้นต้นด้วย 0';
+    }
 
     if (!formData.password) {
-      newError.password = 'password is empty';
+      newError.password = 'กรุณากรอกรหัสผ่าน';
     }
 
     if (!formData.confirmPassword) {
-      newError.confirmPassword = 'confirm password is empty'
+      newError.confirmPassword = 'กรุณายืนยันรหัสผ่าน';
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newError.confirmPassword = 'password not matching'
+      newError.confirmPassword = 'รหัสผ่านไม่ตรงกัน';
     }
 
     setError(newError);
     return Object.keys(newError).length === 0;
-
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!validateForm) return;
+    e.preventDefault();
+    if (!validateForm()) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:8080/api/auth/register', {
@@ -139,28 +122,29 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({
           username: formData.username,
-          email: formData.email,
           phone: formData.phone,
           password: formData.password,
-        })
-      })
-      console.log("Response Status: ",  response.status);
+        }),
+      });
+
       const data = await response.json();
       if (response.ok) {
-        alert('สมัครสมาชิกสำเร็จ')
+        alert('สมัครสมาชิกสำเร็จ');
         if (data.token) {
-          localStorage.setItem('token', data.token)
+          localStorage.setItem('token', data.token);
         }
         router.push('/');
       } else {
-        alert(data.error || 'เกิดข้อผิดพลาด')
+        alert(data.error || 'เกิดข้อผิดพลาด');
       }
     } catch (error) {
-      console.error(error);
+      console.error('Register error:', error);
+      alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
   return (
     <main className="flex w-full p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8">
@@ -170,8 +154,7 @@ export default function RegisterPage() {
         </div>
 
         <form className="flex flex-col space-y-6" onSubmit={handleSubmit}>
-          
-          <InputField 
+          <InputField
             id="fullname"
             label="ชื่อ-นามสกุล"
             type="text"
@@ -183,19 +166,7 @@ export default function RegisterPage() {
             icon={<UserIcon className="h-5 w-5 text-gray-400" />}
           />
 
-          <InputField 
-            id="email"
-            label="อีเมล"
-            type="email"
-            placeholder="example@email.com"
-            value={formData.email}
-            onChange={handleInputChange}
-            error={error.email}
-            name="email"
-            icon={<MailIcon className="h-5 w-5 text-gray-400" />}
-          />
-          
-          <InputField 
+          <InputField
             id="phone"
             label="เบอร์โทรศัพท์"
             type="tel"
@@ -207,7 +178,7 @@ export default function RegisterPage() {
             icon={<PhoneIcon className="h-5 w-5 text-gray-400" />}
           />
 
-          {/* --- ช่องกรอก Password --- */}
+          {/* --- ช่องกรอกรหัสผ่าน --- */}
           <InputField
             id="password"
             label="รหัสผ่าน"
@@ -228,7 +199,7 @@ export default function RegisterPage() {
             </button>
           </InputField>
 
-          {/* --- ช่องยืนยัน Password --- */}
+          {/* --- ช่องยืนยันรหัสผ่าน --- */}
           <InputField
             id="confirmPassword"
             label="ยืนยันรหัสผ่าน"
@@ -253,15 +224,13 @@ export default function RegisterPage() {
           <div className="pt-4">
             <button
               type="submit"
-              onClick={handleSubmit}
               disabled={loading}
               className="w-full rounded-md bg-red-500 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
             >
-              สมัครสมาชิก
+              {loading ? 'กำลังสมัคร...' : 'สมัครสมาชิก'}
             </button>
           </div>
 
-          {/* --- ลิงก์ไปหน้า Login --- */}
           <div className="text-center">
             <p className="text-sm text-gray-500">
               มีบัญชีผู้ใช้อยู่แล้ว?{' '}
@@ -270,7 +239,6 @@ export default function RegisterPage() {
               </Link>
             </p>
           </div>
-
         </form>
       </div>
     </main>
