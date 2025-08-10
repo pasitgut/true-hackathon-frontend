@@ -117,7 +117,7 @@ export default function FamilyPage() {
                 throw new Error('Token ไม่ถูกต้องหรือไม่พบ ID ผู้ใช้');
               }
         
-        const response = await fetch('http://localhost:8080/api/family/my-family', {
+        const response = await fetch('https://true-backend.pasitlab.com/api/family/my-family', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

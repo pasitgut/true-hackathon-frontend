@@ -130,7 +130,7 @@ export default function InboxPage() {
             const userId = decoded.id;
 
             console.log('user id', userId);
-            const res = await fetch("http://localhost:8080/api/family/invitation", {
+            const res = await fetch("https://true-backend.pasitlab.com/api/family/invitation", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export default function InboxPage() {
 
     const statusToSend = response === 'accepted' ? 'accepted' : 'declined';
 
-    const res = await fetch(`http://localhost:8080/api/family/invitation/${id}`, {
+    const res = await fetch(`https://true-backend.pasitlab.com/api/family/invitation/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

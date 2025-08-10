@@ -23,7 +23,7 @@ export default function CheckUrlScreen() {
       if (!familyId) return
 
       try {
-        const res = await fetch(`http://localhost:8080/api/family/block-website/${familyId}`)
+        const res = await fetch(`https://true-backend.pasitlab.com/api/family/block-website/${familyId}`)
         if (!res.ok) throw new Error('โหลดรายการเว็บไซต์ที่ถูกบล็อกไม่สำเร็จ')
 
         const data = await res.json()

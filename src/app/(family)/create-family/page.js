@@ -37,7 +37,7 @@ export default function CreateFamilyPage() {
       }
 
       // 3. ยิง API ไปยัง Backend
-      const response = await fetch('http://localhost:8080/api/family/create', {
+      const response = await fetch('https://true-backend.pasitlab.com/api/family/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

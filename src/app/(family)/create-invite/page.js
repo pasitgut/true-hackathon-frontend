@@ -100,7 +100,7 @@ export default function CreateInvitePage() {
       // ส่งคำเชิญทีละรายการ
       const invitePromises = invitedMembers.map(async (member) => {
         console.log('phone', member.phoneNumber);
-        const response = await fetch('http://localhost:8080/api/family/invite', {
+        const response = await fetch('https://true-backend.pasitlab.com/api/family/invite', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
